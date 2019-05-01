@@ -1,0 +1,7 @@
+{
+    "compilerOptions": {
+        "outFile": "./js/oof.js",
+        "sourceMap": true
+    },
+    "compileOnSave": true
+}
