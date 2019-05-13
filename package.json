@@ -9,7 +9,16 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "big-integer": "^1.6.43",
+    "css-loader": "^2.1.1",
     "golden-layout": "^1.5.9",
-    "monaco-editor": "^0.16.2"
+    "jquery": "^3.4.1",
+    "monaco-editor": "^0.16.2",
+    "style-loader": "^0.23.1"
+  },
+  "devDependencies": {
+    "monaco-editor-webpack-plugin": "^1.7.0",
+    "webpack": "^4.31.0",
+    "webpack-cli": "^3.3.1"
   }
 }

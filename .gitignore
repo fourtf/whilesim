@@ -1,4 +1,7 @@
 js/
+dist/
+ts/*.js
+ts/*.map
 
 # Logs
 logs

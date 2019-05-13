@@ -2,123 +2,19 @@
 <html>
 
 <head>
-    <title>oof</title>
+    <title>While Program Simulator</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
-    <link rel="stylesheet" type="text/css" href="node_modules/golden-layout/src/css/goldenlayout-base.css">
-    <link rel="stylesheet" type="text/css" href="node_modules/golden-layout/src/css/goldenlayout-dark-theme.css">
-
+    <link rel="stylesheet" type="text/css" href="css/goldenlayout-base.css">
+    <link rel="stylesheet" type="text/css" href="css/goldenlayout-dark-theme.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
 
 <body>
-    <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
-    <script src="node_modules/golden-layout/dist/goldenlayout.min.js"></script>
-    <script src="node_modules/monaco-editor/min/vs/loader.js"></script>
-    <script>
-        let setupHighlighting = () => {
-            monaco.languages.register({ id: "while" });
-
-            monaco.languages.setMonarchTokensProvider("while", {
-                defaultToken: "invalid",
-                keywords: [
-                    "WHILE"
-                ],
-                operators: [
-                    ">", "="
-                ],
-                oofbrackets: [
-                    { open: "DO", close: "END", token: "keyword" },
-                ],
-                tokenizer: {
-                    root: [
-                        [/DO|END/, "@oofbrackets"],
-                        [/[A-Z_$][\w$]*/, {
-                            cases: {
-                                '@keywords': 'keyword',
-                                '@default': 'identifier'
-                            }
-                        }],
-                        [/[()]/, '@brackets'],
-                        [/\/\/.*$/, "comment"],
-                        [/#.*$/, "comment"],
-                        [/[>=]/, "operator"],
-                        // [/WHILE/, "type.identifier"],
-                        // [/DO/, "type.identifier"],
-                        // [/END/, "type.identifier"],
-                        [/[xX][1-9][0-9]*/, "number.integer"],
-                        [/[xX]0/, "number.float"],
-                        // [/^\s*WHILE \(\)/, "number.float"],
-                    ]
-                },
-            });
-        };
-
-        // ui
-        let createUi = () => {
-            var config = {
-                settings: {
-                    hasHeaders: true,
-                    constrainDragToContainer: true,
-                    reorderEnabled: true,
-                    selectionEnabled: false,
-                    popoutWholeStack: false,
-                    blockedPopoutsThrowError: true,
-                    closePopoutsOnUnload: true,
-                    showPopoutIcon: false,
-                    showMaximiseIcon: true,
-                    showCloseIcon: false
-                },
-                content: [{
-                    type: 'row',
-                    content: [
-                        {
-                            type: 'component',
-                            componentName: 'code',
-                            componentState: { id: 'xd1' },
-                            isClosable: false,
-                        },
-                        {
-                            type: 'component',
-                            componentName: 'debugger',
-                            componentState: { id: 'xd2' },
-                            isClosable: false,
-                        },
-                    ]
-                }]
-            };
-
-            let myLayout = new GoldenLayout(config);
-
-            myLayout.registerComponent('code', function (container, state) {
-                container.getElement().html(`<div id="${state.id}" style="width:100%;height:100%"></div>`);
-
-                setTimeout(() => {
-                    let editor = monaco.editor.create(document.getElementById(state.id), {
-                        value: [
-                            'WHILE (x > 0) DO',
-                            '\t',
-                            'END'
-                        ].join('\n'),
-                        language: 'while',
-                        automaticLayout: true,
-                        theme: "vs-dark"
-                    });
-                }, 100);
-            });
-
-            myLayout.registerComponent('debugger', function (container, state) {
-                container.getElement().html("asdf");
-            });
-
-            myLayout.init();
-        }
-
-        require.config({ paths: { 'vs': 'node_modules/monaco-editor/min/vs' } });
-        require(['vs/editor/editor.main'], function () {
-            setupHighlighting();
-            createUi();
-        });
-    </script>
+    <script type="text/javascript" src="js/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript" src="js/goldenlayout.min.js"></script>
+    <!--<script type="text/javascript" src="node_modules/monaco-editor/min/vs/loader.js"></script>-->
+    <script type="text/javascript" src="dist/app.js"></script>
 </body>
 
 </html>

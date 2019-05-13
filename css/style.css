@@ -1,0 +1,26 @@
+.run {
+    font-family: "DejaVu Sans Mono", Menlo, Consolas, "Liberation Mono", Monaco, "Lucida Console", monospace;
+    font-size: 14px;
+    color: #CCCC77;
+    margin: 8px;
+}
+
+.run_error {
+    color: #F55;
+}
+
+.run_finished {
+    color: #8F8;
+}
+
+.myGlyphMarginClass {
+    background-image: url("../assets/xD.svg");
+    background-size: cover;
+}
+.myContentClass {
+	background: rgba(0,255,0,0.1);
+}
+
+.run>div {
+    margin-top: 8px;
+}
