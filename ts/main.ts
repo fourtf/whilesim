@@ -1,5 +1,6 @@
 import * as monaco from 'monaco-editor';
-import * as sim from './while-ast';
+import * as parser from './parser';
+import * as sim from './simulation';
 
 declare const GoldenLayout: any;
 declare const $: any;
@@ -40,7 +41,7 @@ END;
 // The result is stored in x0`;
 
 class EditorExtraData {
-    execution: sim.Execution;
+    simulation: sim.Simulation;
     decoration: string[] = [];
 }
 
@@ -85,13 +86,13 @@ function provideHover(model: monaco.editor.ITextModel, position: monaco.Position
     let match: RegExpExecArray;
     const extraData = getExtraData(model);
 
-    if (extraData && extraData.execution) {
+    if (extraData && extraData.simulation) {
         while ((match = re.exec(line)) != null) {
             if (match.index <= position.column && match.length + match.index + 1 >= position.column) {
                 return {
                     range: new monaco.Range(position.lineNumber, position.column, position.lineNumber, position.column),
                     contents: [
-                        { value: extraData.execution.variables[match[0].toLowerCase()].toString() }
+                        { value: extraData.simulation.variables[match[0].toLowerCase()].toString() }
                     ]
                 }
             }
@@ -189,20 +190,20 @@ function createDebugView(container, state) {
 
 class EditorState {
     ast: sim.Ast;
-    exec: sim.Execution;
+    simulation: sim.Simulation;
     editor: monaco.editor.IStandaloneCodeEditor;
     id: string;
 }
 
 function handleTextChange(state: EditorState) {
     const extraData = getExtraData(state.editor.getModel());
-    const newAst = sim.whileParse(state.editor.getModel().getValue());
+    const newAst = parser.parse(state.editor.getModel().getValue());
 
     if (state.ast == null) {
         state.ast = newAst;
     }
 
-    let { ast, exec } = state;
+    let { ast, simulation } = state;
 
     $("#run_" + state.id + "_reload")[0].disabled = false;
     $("#run_error_" + state.id).text(newAst.error || "");
@@ -211,7 +212,7 @@ function handleTextChange(state: EditorState) {
         $("#run_" + state.id + "_reload").unbind("click");
         $("#run_" + state.id + "_reload").click(
             function () {
-                extraData.execution = state.exec = exec = new sim.Execution(newAst);
+                extraData.simulation = state.simulation = simulation = new sim.Simulation(newAst);
                 state.ast = ast = newAst;
                 updateDebugView(state);
                 $("#run_" + state.id + "_reload")[0].disabled = true;
@@ -220,15 +221,15 @@ function handleTextChange(state: EditorState) {
         $("#run_" + state.id + "_reset").unbind("click");
         $("#run_" + state.id + "_reset").click(
             function () {
-                extraData.execution = state.exec = exec = new sim.Execution(ast);
+                extraData.simulation = state.simulation = simulation = new sim.Simulation(ast);
                 updateDebugView(state);
             });
 
         $("#run_" + state.id + "_step").unbind("click");
         $("#run_" + state.id + "_step").click(
             function () {
-                if (exec) {
-                    exec.step();
+                if (simulation) {
+                    simulation.step();
                 }
                 updateDebugView(state);
             });
@@ -236,8 +237,8 @@ function handleTextChange(state: EditorState) {
         $("#run_" + state.id + "_run").unbind("click");
         $("#run_" + state.id + "_run").click(
             function () {
-                if (exec) {
-                    exec.run();
+                if (simulation) {
+                    simulation.run();
                 }
                 updateDebugView(state);
             });
@@ -245,7 +246,7 @@ function handleTextChange(state: EditorState) {
 }
 
 function updateDebugView(state: EditorState) {
-    const { exec, editor, id } = state;
+    const { simulation: exec, editor, id } = state;
     const extraData = getExtraData(editor.getModel());
 
     if (!exec) {
