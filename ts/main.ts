@@ -8,7 +8,7 @@ declare const $: any;
 const defaultProgram = `/*
   While Program Simulator
 
-  "while" is a programming language consisting only of 3 basic operations:
+  "while" is a programming language with only 3 basic operations:
     - Addition with a constant:
       x0 := x1 + 5;
     
@@ -23,7 +23,7 @@ const defaultProgram = `/*
   Available variables are x0, x1, x2, ... and never go below 0.
 */
 
-// Sample "multiplication"
+// Below is code to  do a multiplication.
 // Click "Compile Code" on the right side to run.
 
 x1 := x1 + 3; // Input (x1 = 3, x2 = 4)
@@ -177,7 +177,7 @@ function createCodeView(container, state) {
 }
 
 function createDebugView(container, state) {
-    container.getElement().html(`<div class='run'>
+    container.getElement().html(`<div class='run panel'>
         <button id='run_${state.id}_reload'>Compile Code</button>
         <button disabled id='run_${state.id}_reset'>Reset Simulation</button>
         <button disabled id='run_${state.id}_run'>Run</button>
@@ -255,10 +255,12 @@ function updateDebugView(state: EditorState) {
 
     $("#run_vars_" + id).html(
         (() => {
-            let content = "Variables:<br><br>";
+            let content = "<table><tr><th>Variable</th><th>Value</th></tr>"; //<th>Initial</th>
             for (const name in exec.variables) {
-                content += `${name}: ${exec.variables[name]}<br>`;
+                // content += `${name}: ${exec.variables[name]}<br>`;
+                content += `<tr><td>${name}</td><td>${exec.variables[name]}</td><tr>`;
             }
+            content += "</table>";
             return content;
         })());
 

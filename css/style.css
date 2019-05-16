@@ -1,4 +1,4 @@
-.run {
+.panel {
     font-family: "DejaVu Sans Mono", Menlo, Consolas, "Liberation Mono", Monaco, "Lucida Console", monospace;
     font-size: 14px;
     color: #CCCC77;
@@ -23,4 +23,8 @@
 
 .run>div {
     margin-top: 8px;
+}
+
+th, td {
+    padding-right: 8px;
 }
