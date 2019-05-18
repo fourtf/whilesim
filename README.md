@@ -1,9 +1,9 @@
-##While Program Simulator
+## While Program Simulator
 
-###Try it out
+### Try it out
 [https://while.schnabel.io](https://while.schnabel.io)
 
-###How to run locally
+### How to run locally
 1.  Install `nodejs` and `typescript`
 2.  Run in terminal
     ```
